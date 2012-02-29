@@ -75,7 +75,7 @@ public class TabataPanel {
 	private static final int HEIGHT = 380;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Metodo que retorna un panel previamente configurado
 	 */
 	public JPanel buildPanel(){
 		
@@ -168,15 +168,20 @@ public class TabataPanel {
 		return tabataPanel;
 	}
 
+	/**
+	 * Metodo que ejecuta el calculo de los intervalos de tiempo
+	 * establecidos por el usuario, y refresca las etiquetas 
+	 * correspondientes
+	 */
 	public void runCronometer() {
 		
 		final int s = Integer.parseInt( txtSeriesToSet.getText() );
 		final int w = Integer.parseInt( txtWorkToSet.getText() );
 		final int r = Integer.parseInt( txtRestToSet.getText() );
 		
-		countSeries.setText(txtSeriesToSet.getText());
-		countSecondsWork.setText( txtWorkToSet.getText() );
-		countSecondsRest.setText( txtRestToSet.getText() );
+		countSecondsWork.setText( w >= 10 ? EMPTY_STRING + w : ZERO_STRING + w );
+		countSecondsRest.setText( r >= 10 ? EMPTY_STRING + r : ZERO_STRING + r );	
+		countSeries.setText( s >= 10 ? EMPTY_STRING + s : ZERO_STRING + s );
 		
 		swingWorker = new SwingWorker<Void, Void>(){
 			
@@ -187,9 +192,9 @@ public class TabataPanel {
 			@Override
 			protected Void doInBackground() throws Exception {
 				
-				beginWorkout.setIcon(go);
+				disableElements();
 				
-				while( seriesToSet > 0){
+				while( seriesToSet >= 0){
 					
 					if( workToSet > 0 || restToSet > 0 ){
 						while ( workToSet > 0 ) {
@@ -202,6 +207,11 @@ public class TabataPanel {
 							restToSet--;
 							countSecondsRest.setText( restToSet >= 10 ? EMPTY_STRING + restToSet : ZERO_STRING + restToSet );
 						}
+					}
+					
+					if ( seriesToSet == 0 && workToSet == 0 && restToSet == 0){
+						enableElements();
+						break;
 					}
 					
 					seriesToSet--;
@@ -218,15 +228,50 @@ public class TabataPanel {
 		swingWorker.execute();
 	}
 
+	/**
+	 * Metodo que retorna la altura preconfigurada del panel
+	 * @return HEIGHT
+	 */
 	public int getHeight() {
 		return HEIGHT;
 	}
 
+	/**
+	 * Metodo que retorna la anchura preconfigurada del panel
+	 * @return WIDTH
+	 */
 	public int getWidth() {
 		return WIDTH;
 	}
 
+	/**
+	 * Metodo que retorna el objeto de tipo JButton
+	 * con el fin de asignarle una accion en el panel principal
+	 * @return JButton
+	 */
 	public JButton getBeginWorkout() {
 		return this.beginWorkout;
+	}
+	
+	/**
+	 * Habilita campos de texto y el boton que inicializa el contador
+	 */
+	private void enableElements(){
+		beginWorkout.setEnabled( true );
+		beginWorkout.setIcon(stop);
+		txtRestToSet.setEnabled( true );
+		txtSeriesToSet.setEnabled( true );
+		txtWorkToSet.setEnabled( true );
+	}
+	
+	/**
+	 * Inhabilita campos de texto y el boton que inicializa el contador
+	 */
+	private void disableElements(){
+		beginWorkout.setEnabled( false );
+		beginWorkout.setIcon(go);
+		txtRestToSet.setEnabled( true );
+		txtSeriesToSet.setEnabled( true );
+		txtWorkToSet.setEnabled( true );
 	}
 }

@@ -63,7 +63,7 @@ public class CronometerPanel {
 	private SwingWorker<Void, Void> swingWorker;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Metodo que retorna un panel previamente configurado
 	 */
 	public JPanel buildPanel(){
 		
@@ -98,7 +98,6 @@ public class CronometerPanel {
 		beginWorkout.setVerticalTextPosition(SwingConstants.BOTTOM) ;
 		beginWorkout.setVerticalAlignment(SwingConstants.BOTTOM);
 		beginWorkout.setBounds(319 , 10 , 160, 80);
-		beginWorkout.setActionCommand( "beginCronometer" );
 		
 		parameterPanel.add( labelMinutesTaped );
 		parameterPanel.add( txtMinutesTaped );
@@ -141,8 +140,13 @@ public class CronometerPanel {
 		return cronometerPanel;
 	}
 
+	/**
+	 * Metodo que ejecuta el calculo de los intervalos de tiempo
+	 * establecidos por el usuario, y refresca las etiquetas 
+	 * correspondientes
+	 */
 	public void runCronometer() {
-		
+				
 		final int m = Integer.parseInt( txtMinutesTaped.getText());
 		final int s = Integer.parseInt( txtSecondsTaped.getText());
 		
@@ -156,7 +160,7 @@ public class CronometerPanel {
 			@Override
 			protected Void doInBackground() throws Exception {
 				
-				beginWorkout.setIcon(go);
+				disableElements();
 				
 				while (secondsToSet >= 0 && minutesToSet >= 0 ) {
 					if (secondsToSet > 0) {
@@ -164,29 +168,65 @@ public class CronometerPanel {
 						secondsToSet--;
 						labelSeconds.setText( secondsToSet >= 10 ? EMPTY_STRING + secondsToSet : ZERO_STRING + secondsToSet );
 					} 
-					else {
-						if (minutesToSet > 0) {
-							minutesToSet--;
-							secondsToSet = 60;
-							labelMinutes.setText( minutesToSet >= 10 ? EMPTY_STRING + minutesToSet : ZERO_STRING + minutesToSet );
-						}
+					else if (minutesToSet > 0) {
+						minutesToSet--;
+						secondsToSet = 60;
+						labelMinutes.setText( minutesToSet >= 10 ? EMPTY_STRING + minutesToSet : ZERO_STRING + minutesToSet );
+					}
+					else{
+						enableElements();
+						break;
 					}
 				}
 				return null;
 			}
 		};
 		swingWorker.execute();
+		
 	}
-	
+
+	/**
+	 * Metodo que retorna la altura preconfigurada del panel
+	 * @return HEIGHT
+	 */
 	public int getHeight() {
 		return HEIGHT;
 	}
 
+	/**
+	 * Metodo que retorna la anchura preconfigurada del panel
+	 * @return WIDTH
+	 */
 	public int getWidth() {
 		return WIDTH;
 	}
 	
+	/**
+	 * Metodo que retorna el objeto de tipo JButton
+	 * con el fin de asignarle una accion en el panel principal
+	 * @return JButton
+	 */
 	public JButton getBeginWorkout() {
 		return this.beginWorkout;
+	}
+	
+	/**
+	 * Habilita campos de texto y el boton que inicializa el contador
+	 */
+	private void enableElements(){
+		beginWorkout.setEnabled( true );
+		beginWorkout.setIcon(stop);
+		txtMinutesTaped.setEnabled( true );
+		txtSecondsTaped.setEnabled( true );
+	}
+	
+	/**
+	 * Inhabilita campos de texto y el boton que inicializa el contador
+	 */
+	private void disableElements(){
+		beginWorkout.setEnabled( false );
+		beginWorkout.setIcon(go);
+		txtMinutesTaped.setEnabled( false );
+		txtSecondsTaped.setEnabled( false );
 	}
 }
