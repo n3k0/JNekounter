@@ -47,7 +47,7 @@ import org.workout.counter.util.Mp3Player;
  * @author n3k0
  *
  */
-public class FrameCreator implements Runnable , ActionListener{
+public class FrameCreator implements ActionListener{
 	
 	private JFrame frame;
 	
@@ -108,7 +108,7 @@ public class FrameCreator implements Runnable , ActionListener{
 		containerPanel.add( cronometerPanel , OptionPanel.OPTION_CRONOMETER );
 		containerPanel.add( tabataPanel , OptionPanel.OPTION_TABATA );
 		
-		frame.setBounds( this.putFrameOnDesktop( WIDTH, this.getCronometerSize() ));
+		frame.setBounds( this.putFrameOnDesktop( WIDTH, this.calculateSize( option.getHeight() , track.getHeight() , cronometer.getHeight() , 10 )));
 		
 		frame.add(optionPanel);
 		frame.add(trackPanel);
@@ -127,12 +127,12 @@ public class FrameCreator implements Runnable , ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if( event.getSource().equals( option.getRadioCronos() ) ) {
-			frame.setSize(WIDTH, this.getCronometerSize() );
+			frame.setSize(WIDTH, this.calculateSize( option.getHeight() , track.getHeight() , cronometer.getHeight() , 10 ) );
 			containerPanel.setSize( container.getWidth(), cronometer.getHeight());
 			((CardLayout) containerPanel.getLayout()).show( containerPanel , OptionPanel.OPTION_CRONOMETER );
 		}
 		else if( event.getSource().equals( option.getRadioTabata() ) ) {
-			frame.setSize(WIDTH, this.getTabataSize() );
+			frame.setSize(WIDTH, this.calculateSize( option.getHeight() , track.getHeight() , tabata.getHeight() ,10 ) );
 			containerPanel.setSize( container.getWidth(), tabata.getHeight());
 			((CardLayout) containerPanel.getLayout()).show( containerPanel , OptionPanel.OPTION_TABATA );
 		}
@@ -149,7 +149,6 @@ public class FrameCreator implements Runnable , ActionListener{
 			if(player != null){
 				player.playMp3();
 			}
-			
 		}
 		else if( event.getSource().equals( track.getTrackButton() )){
 			JFileChooser chooser = new JFileChooser();
@@ -183,25 +182,16 @@ public class FrameCreator implements Runnable , ActionListener{
 	}
 	
 	/**
-	 * Calcula la altura total del frame cuando se selecciona la opcion de cronometro
+	 * Calcula la altura total del frame en base a los digitos que se envien
 	 * @return valor de la altura del frame
 	 */
-	private int getCronometerSize(){
-		return option.getHeight() + 5 +
-			   track.getHeight() + 5 +
-			   cronometer.getHeight();
+	private int calculateSize( int ...array ){
+		
+		int result = 0;
+		
+		for( int next : array){
+			result +=next;
+		}
+		return result;
 	}
-	
-	/**
-	 * Calcula la altura total del frame cuando se selecciona la opcion de tabata
-	 * @return valor de la altura del frame
-	 */
-	private int getTabataSize(){
-		return option.getHeight() + 5 +
-			   track.getHeight() + 5 +
-			   tabata.getHeight();
-	}
-	
-	@Override
-	public void run() {}
 }
