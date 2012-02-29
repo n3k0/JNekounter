@@ -53,7 +53,13 @@ public class Main {
 			System.out.println("[Main.main:UnsupportedLookAndFeelException]"+ e.getMessage());
 		}
 		finally{
-			EventQueue.invokeLater(new FrameCreator());
+			EventQueue.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					 new FrameCreator();
+				}
+			});
 		}
 	}
 }
