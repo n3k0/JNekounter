@@ -24,7 +24,14 @@ package org.workout.counter.panel.swing;
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
-
+/**
+ * Clase que hace funcion de contenedor de los distintos cronometros  mediante 
+ * el useo de un CardLayout el cual se cambia mediante eventos que detona
+ * un objeto de tipo OptionPanel
+ * 
+ * @author n3k0
+ *
+ */
 public class ContainerPanel {
 	
 	private JPanel containerPanel;
@@ -33,7 +40,7 @@ public class ContainerPanel {
 	private static final int HEIGHT = 235;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Metodo que retorna un panel previamente configurado
 	 */
 	public JPanel buildPanel() {
 		
@@ -43,10 +50,18 @@ public class ContainerPanel {
 		return containerPanel;
 	}
 
+	/**
+	 * Metodo que retorna la altura preconfigurada del panel
+	 * @return HEIGHT
+	 */
 	public int getHeight() {
 		return HEIGHT;
 	}
 
+	/**
+	 * Metodo que retorna la anchura preconfigurada del panel
+	 * @return WIDTH
+	 */
 	public int getWidth() {
 		return WIDTH;
 	}
