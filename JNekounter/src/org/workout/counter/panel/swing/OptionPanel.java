@@ -25,6 +25,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ * Clase que construye un panel con opciones representadas por JRadioButton
+ * las cuales refresacaran el contenedor asignado mostrando el cronometro seleccionado
+ * @author n3k0
+ *
+ */
 public class OptionPanel{
 	
 	private JPanel optionPanel;
@@ -40,14 +46,14 @@ public class OptionPanel{
 	public static final String OPTION_TABATA = "Tabata";
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Metodo que retorna un panel previamente configurado
 	 */
 	public JPanel buildPanel() {
 		
 		optionPanel = new JPanel(null);
 		optionPanel.setSize( WIDTH , HEIGHT );
 		
-		radioCronos = new JRadioButton( OPTION_CRONOMETER );
+		radioCronos = new JRadioButton( OPTION_CRONOMETER , true );
 		radioTabata = new JRadioButton( OPTION_TABATA );
 		
 		buttonGroup = new ButtonGroup();
@@ -63,18 +69,36 @@ public class OptionPanel{
 		return optionPanel;
 	}
 
+	/**
+	 * Metodo que retorna la altura preconfigurada del panel
+	 * @return HEIGHT
+	 */
 	public int getHeight() {
 		return HEIGHT;
 	}
 
+	/**
+	 * Metodo que retorna la anchura preconfigurada del panel
+	 * @return WIDTH
+	 */
 	public int getWidth() {
 		return WIDTH;
 	}
 
+	/**
+	 * Metodo que retorna el objeto de tipo JRadioButton
+	 * con el fin de asignarle una accion en el panel principal
+	 * @return JRadioButton
+	 */
 	public JRadioButton getRadioCronos() {
 		return radioCronos;
 	}
 
+	/**
+	 * Metodo que retorna el objeto de tipo JRadioButton
+	 * con el fin de asignarle una accion en el panel principal
+	 * @return JRadioButton
+	 */
 	public JRadioButton getRadioTabata() {
 		return radioTabata;
 	}

@@ -80,7 +80,6 @@ public class Mp3Player{
 							souceDataline.drain();
 							souceDataline.stop();
 							souceDataline.close();
-						
 						}
 					}
 					catch (UnsupportedAudioFileException e) {

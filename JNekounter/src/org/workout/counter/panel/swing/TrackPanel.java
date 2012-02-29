@@ -43,7 +43,7 @@ public class TrackPanel {
 	private static final int HEIGHT = 30;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Metodo que retorna un panel previamente configurado
 	 */
 	public JPanel buildPanel(){
 		
