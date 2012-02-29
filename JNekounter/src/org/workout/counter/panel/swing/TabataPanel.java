@@ -74,6 +74,8 @@ public class TabataPanel {
 	private static final int WIDTH = 500;
 	private static final int HEIGHT = 380;
 	
+	private boolean workoutStarted;
+	
 	/**
 	 * Metodo que retorna un panel previamente configurado
 	 */
@@ -257,7 +259,7 @@ public class TabataPanel {
 	 * Habilita campos de texto y el boton que inicializa el contador
 	 */
 	private void enableElements(){
-		beginWorkout.setEnabled( true );
+		workoutStarted = false;
 		beginWorkout.setIcon(stop);
 		txtRestToSet.setEnabled( true );
 		txtSeriesToSet.setEnabled( true );
@@ -268,10 +270,17 @@ public class TabataPanel {
 	 * Inhabilita campos de texto y el boton que inicializa el contador
 	 */
 	private void disableElements(){
-		beginWorkout.setEnabled( false );
+		workoutStarted = true;
 		beginWorkout.setIcon(go);
 		txtRestToSet.setEnabled( true );
 		txtSeriesToSet.setEnabled( true );
 		txtWorkToSet.setEnabled( true );
+	}
+	
+	/**
+	 * @return true si el workout ha iniciado false en caso contrario
+	 */
+	public boolean isWorkoutStarted() {
+		return workoutStarted;
 	}
 }

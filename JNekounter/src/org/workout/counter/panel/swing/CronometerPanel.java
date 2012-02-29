@@ -60,6 +60,8 @@ public class CronometerPanel {
 	private static final String EMPTY_STRING = "";
 	private static final String ZERO_STRING = "0";
 	
+	private boolean workoutStarted;
+	
 	private SwingWorker<Void, Void> swingWorker;
 	
 	/**
@@ -214,7 +216,7 @@ public class CronometerPanel {
 	 * Habilita campos de texto y el boton que inicializa el contador
 	 */
 	private void enableElements(){
-		beginWorkout.setEnabled( true );
+		workoutStarted = false;
 		beginWorkout.setIcon(stop);
 		txtMinutesTaped.setEnabled( true );
 		txtSecondsTaped.setEnabled( true );
@@ -224,9 +226,16 @@ public class CronometerPanel {
 	 * Inhabilita campos de texto y el boton que inicializa el contador
 	 */
 	private void disableElements(){
-		beginWorkout.setEnabled( false );
+		workoutStarted = true;
 		beginWorkout.setIcon(go);
 		txtMinutesTaped.setEnabled( false );
 		txtSecondsTaped.setEnabled( false );
+	}
+
+	/**
+	 * @return true si el workout ha iniciado false en caso contrario
+	 */
+	public boolean isWorkoutStarted() {
+		return workoutStarted;
 	}
 }
