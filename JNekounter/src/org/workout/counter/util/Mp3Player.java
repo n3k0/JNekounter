@@ -40,9 +40,32 @@ import javax.swing.SwingWorker;
  */
 public class Mp3Player{
 	
-	private File song;
+	private static Mp3Player mp3Player;
 	
+	private SourceDataLine souceDataline;
+	private File song;
 	private SwingWorker< Void, Void> swingWorker;
+	private boolean trackPlaying;
+	
+	/**
+	 * Constructor privado, para que solo exista una instancia del reproductor
+	 */
+	private Mp3Player(){}
+	
+	/**
+	 * Metodo que retorna un objeto singleton de tipo Mp3Player
+	 * @return Mp3Player mp3Player
+	 */
+	public static Mp3Player getInstance(){
+		if( mp3Player == null ){
+			synchronized( Mp3Player.class ){
+				if( mp3Player == null ){
+					mp3Player = new Mp3Player();
+				}
+			}
+		}
+		return mp3Player;
+	}
 	
 	/**
 	 * Metodo que ejecuta la reproduccion del archivo previamente seleccionado
@@ -63,16 +86,16 @@ public class Mp3Player{
 								AudioFormat.Encoding.PCM_SIGNED,
 								baseFormat.getSampleRate(), 16, baseFormat.getChannels(),
 								baseFormat.getChannels() * 2, baseFormat.getSampleRate(),
-								false);
+								baseFormat.isBigEndian() );
 						decodedInputStream = AudioSystem.getAudioInputStream(decodedFormat, audioInputStream);
 						DataLine.Info info = new DataLine.Info(SourceDataLine.class, decodedFormat);
-						SourceDataLine souceDataline = (SourceDataLine) AudioSystem.getLine(info);
+						souceDataline = (SourceDataLine) AudioSystem.getLine(info);
 						
 						if(souceDataline != null) {
 							souceDataline.open(decodedFormat);
 							byte[] data = new byte[4096];
 							souceDataline.start();
-							
+							trackPlaying = true;
 							int nBytesRead;
 							while (( nBytesRead = decodedInputStream.read(data, 0, data.length)) != -1) {	
 								souceDataline.write(data, 0, nBytesRead);
@@ -110,7 +133,14 @@ public class Mp3Player{
 	 * Metodo que recibe un objeto de tipo File, el cual representa el track a reproducir
 	 * @param song
 	 */
-	public void setFileToPlay(File song) {
+	public void setTrackToPlay(File song) {
 		this.song = song;
+	}
+	
+	/**
+	 * @return true si existe un track en reproduccion, false en caso contrario
+	 */
+	public boolean isTrackPlaying(){
+		return trackPlaying;
 	}
 }
