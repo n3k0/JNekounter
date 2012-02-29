@@ -137,34 +137,42 @@ public class FrameCreator implements ActionListener{
 			((CardLayout) containerPanel.getLayout()).show( containerPanel , OptionPanel.OPTION_TABATA );
 		}
 		else if( event.getSource().equals( cronometer.getBeginWorkout() )){
-			cronometer.runCronometer();
-			
-			if(player != null){
-				player.playMp3();
+			if ( !cronometer.isWorkoutStarted() ) {
+				cronometer.runCronometer();
+				
+				if (player != null ) {
+					if( !player.isTrackPlaying()){
+						player.playMp3();	
+					}
+				}
 			}
 		}
 		else if( event.getSource().equals( tabata.getBeginWorkout() )){
-			tabata.runCronometer();
-			
-			if(player != null){
-				player.playMp3();
+			if ( !tabata.isWorkoutStarted() ) {
+				tabata.runCronometer();
+				
+				if (player != null ) {
+					if( !player.isTrackPlaying()){
+						player.playMp3();	
+					}
+				}
 			}
 		}
 		else if( event.getSource().equals( track.getTrackButton() )){
-			JFileChooser chooser = new JFileChooser();
-		    FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 Music tracks", "mp3");
-		    chooser.setFileFilter(filter);
-		    chooser.showOpenDialog( track.getTrackButton() );
-		    
-		    song = chooser.getSelectedFile();
-		    
-			if ( song != null ) {
+			player = Mp3Player.getInstance();
+			
+			if ( !player.isTrackPlaying() ) {
+				JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 Music tracks", "mp3");
+				chooser.setFileFilter(filter);
+				chooser.showOpenDialog(track.getTrackButton());
+				song = chooser.getSelectedFile();
+				
 				if (song.getName().endsWith("mp3")) {
-					player = new Mp3Player();
-					player.setFileToPlay( song );
+					player.setTrackToPlay(song);
 				}
 				else {
-					JOptionPane.showMessageDialog( frame , "Tipo de archivo incorrecto ", "Error",	JOptionPane.ERROR_MESSAGE );
+					JOptionPane.showMessageDialog(frame,"Tipo de archivo incorrecto ", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
