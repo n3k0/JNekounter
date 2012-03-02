@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 import org.workout.counter.util.FontSearcher;
-
+import org.workout.counter.util.Beep;
 /**
  * Clase que construye un panel que sirve para contar series 
  * por intervalos de tiempo, entre tiempos activos (workout) y descansos.
@@ -75,6 +75,7 @@ public class TabataPanel {
 	private static final int HEIGHT = 380;
 	
 	private boolean workoutStarted;
+	private Beep beep = Beep.getBeeper();
 	
 	/**
 	 * Metodo que retorna un panel previamente configurado
@@ -204,14 +205,17 @@ public class TabataPanel {
 							workToSet--;
 							countSecondsWork.setText( workToSet >= 10 ? EMPTY_STRING + workToSet : ZERO_STRING + workToSet );
 						}
+						beep.beep( 5, 500 );
 						while ( restToSet > 0 ) {
 							Thread.sleep(1000);
 							restToSet--;
 							countSecondsRest.setText( restToSet >= 10 ? EMPTY_STRING + restToSet : ZERO_STRING + restToSet );
 						}
+						beep.beep( 3 , 250 );
 					}
 					
 					if ( seriesToSet == 0 && workToSet == 0 && restToSet == 0){
+						beep.beep( 10 , 600 , true );
 						enableElements();
 						break;
 					}
