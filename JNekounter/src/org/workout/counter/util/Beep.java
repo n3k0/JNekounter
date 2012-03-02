@@ -24,6 +24,11 @@ import javax.sound.midi.Synthesizer;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+
+/**
+ * Beeps :P 
+ * @author oscarryz
+ */ 
 public class Beep {
    public static Beep getBeeper() {
       return new Beep();
@@ -31,6 +36,7 @@ public class Beep {
 
    private Synthesizer synth;
    private MidiChannel channel;
+   
    private Beep() {
       try { 
          synth = MidiSystem.getSynthesizer();
